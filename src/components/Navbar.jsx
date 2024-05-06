@@ -1,5 +1,5 @@
-import React from 'react'
-import { burger, logo,cart } from '@/assets';
+import React, { useState, useEffect } from 'react';
+import { burger, logo, cart } from '@/assets';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -21,8 +21,23 @@ import {
 
 
 const Navbar = () => {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 0;
+      setScrolled(isScrolled);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className='py-4 px-5 flex justify-between items-center'>
+    <div className={`py-4 px-5 flex justify-between items-center sticky top-0 bg-white z-10 ${scrolled ? 'shadow-sm' : ''}`}>
         <div>
             <Sheet>
             <SheetTrigger asChild>
@@ -73,4 +88,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Navbar;
